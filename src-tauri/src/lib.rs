@@ -17,11 +17,7 @@ pub fn run() {
         .setup(|app| {
             logger::install_panic_hook(app.handle());
             logger::record_startup_event(app.handle(), "Tauri 应用初始化开始");
-            platform::create_main_window(app).map_err(|error| {
-                logger::record_startup_error(app.handle(), &error.to_string());
-                Box::new(error) as Box<dyn std::error::Error>
-            })?;
-            logger::record_startup_event(app.handle(), "主窗口创建完成");
+            logger::record_startup_event(app.handle(), "主窗口由 Tauri 配置创建");
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![

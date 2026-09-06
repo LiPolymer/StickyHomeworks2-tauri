@@ -10,7 +10,15 @@
     "frontendDist": "../dist"
   },
   "app": {
-    "windows": [],
+    "windows": [
+      {
+        "label": "main",
+        "title": "stickyhomeworks2",
+        "transparent": true,
+        "decorations": false,
+        "resizable": false
+      }
+    ],
     "security": {
       "csp": null
     }

@@ -69,14 +69,14 @@
   overflow: clip;
   --m3e-segmented-list-segment-gap: 0.125rem;
   --m3e-segmented-list-container-shape: 0.75rem;
-  --m3e-segmented-list-item-container-color: var(--md-sys-color-surface-container-low);
+  --m3e-segmented-list-item-container-color: var(--app-surface-low, var(--md-sys-color-surface-container-low));
   --m3e-segmented-list-item-container-shape: 0;
 }
 
 .homework-item {
   min-width: 0;
   width: 100%;
-  --m3e-list-item-container-color: var(--md-sys-color-surface-container-low);
+  --m3e-list-item-container-color: var(--app-surface-low, var(--md-sys-color-surface-container-low));
   --m3e-list-item-label-text-color: var(--md-sys-color-on-surface);
   --m3e-list-item-supporting-text-color: var(--md-sys-color-on-surface-variant);
   --m3e-list-item-leading-color: var(--md-sys-color-primary);
@@ -204,7 +204,7 @@
   justify-content: center;
   padding: 0.5rem 1rem max(1rem, env(safe-area-inset-bottom));
   border-top: 1px solid var(--md-sys-color-outline-variant);
-  background: var(--md-sys-color-surface-container-low);
+  background: var(--app-surface-low, var(--md-sys-color-surface-container-low));
 }
 
 @media (min-width: 768px) {

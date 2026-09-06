@@ -1,3 +1,4 @@
+
 #[tauri::command]
 pub(crate) fn runtime_layout() -> &'static str {
     #[cfg(any(target_os = "android", target_os = "ios"))]
@@ -21,16 +22,3 @@ pub(crate) fn webkitgtk_dialog_exit_workaround_required() -> bool {
     cfg!(target_os = "linux")
 }
 
-pub(crate) fn create_main_window(app: &tauri::App) -> tauri::Result<()> {
-    let window = tauri::WebviewWindowBuilder::new(app, "main", tauri::WebviewUrl::default())
-        .title("stickyhomeworks2")
-        //.inner_size(800.0, 600.0)
-        // Required by Tauri/Wry for Linux and Windows WebView clipboard shortcuts.
-        .enable_clipboard_access();
-
-    #[cfg(desktop)]
-    let window = window.decorations(false).resizable(false);
-
-    window.build()?;
-    Ok(())
-}

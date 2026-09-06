@@ -302,6 +302,7 @@ onUnmounted(() => stopAlwaysOnBottomWatch?.());
       'app-frame--mobile': isMobileRuntime,
       'app-frame--window-unlocked': isWindowUnlocked,
     }"
+    :style="{ '--background-opacity': `${appData.settings.backgroundOpacity}%` }"
     :data-tauri-drag-region="isWindowUnlocked ? 'deep' : undefined"
   >
       <m3e-app-bar class="app-bar" :class="{ 'app-bar--unlocked': isWindowUnlocked }">

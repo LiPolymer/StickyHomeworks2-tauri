@@ -73,6 +73,8 @@ pub(crate) struct AppSettings {
     pub(crate) max_panel_width: f64,
     #[serde(default, alias = "AlwaysOnBottom")]
     pub(crate) always_on_bottom: bool,
+    #[serde(default = "default_background_opacity", alias = "BackgroundOpacity")]
+    pub(crate) background_opacity: f64,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -98,6 +100,7 @@ impl Default for AppSettings {
             expired_mark_color: default_expired_mark_color(),
             max_panel_width: default_max_panel_width(),
             always_on_bottom: false,
+            background_opacity: default_background_opacity(),
         }
     }
 }
@@ -128,6 +131,7 @@ pub(crate) fn normalize_settings(settings: &mut AppSettings) {
     settings.subjects = unique_vocabulary(std::mem::take(&mut settings.subjects));
     settings.tags = unique_vocabulary(std::mem::take(&mut settings.tags));
     settings.max_panel_width = normalize_panel_width(settings.max_panel_width);
+    settings.background_opacity = normalize_background_opacity(settings.background_opacity);
 }
 
 fn schema_version() -> u8 {
@@ -148,6 +152,19 @@ fn default_expired_mark_color() -> String {
 
 fn default_max_panel_width() -> f64 {
     350.0
+}
+
+fn default_background_opacity() -> f64 {
+    100.0
+}
+
+fn normalize_background_opacity(value: f64) -> f64 {
+    let value = if value.is_finite() {
+        value
+    } else {
+        default_background_opacity()
+    };
+    value.clamp(0.0, 100.0).round()
 }
 
 fn default_due_time() -> String {

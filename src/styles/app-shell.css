@@ -1,11 +1,24 @@
 .app-frame {
+  --app-surface-background: color-mix(in srgb, var(--md-sys-color-background) var(--background-opacity, 100%), transparent);
+  --app-surface-low: color-mix(in srgb, var(--md-sys-color-surface-container-low) var(--background-opacity, 100%), transparent);
+  --app-surface: color-mix(in srgb, var(--md-sys-color-surface-container) var(--background-opacity, 100%), transparent);
+  --app-surface-high: color-mix(in srgb, var(--md-sys-color-surface-container-high) var(--background-opacity, 100%), transparent);
+  --app-surface-highest: color-mix(in srgb, var(--md-sys-color-surface-container-highest) var(--background-opacity, 100%), transparent);
+  --app-secondary-container: color-mix(in srgb, var(--md-sys-color-secondary-container) var(--background-opacity, 100%), transparent);
   position: relative;
   display: block;
   height: 100dvh;
   min-height: 0;
   overflow: hidden;
   color: var(--md-sys-color-on-background);
-  background: var(--md-sys-color-background);
+  background: var(--app-surface-background);
+  --m3e-drawer-container-color: var(--app-surface-background);
+  --m3e-modal-drawer-container-color: var(--md-sys-color-surface-container);
+  --m3e-bottom-sheet-container-color: var(--md-sys-color-surface-container-high);
+  --m3e-dialog-container-color: var(--md-sys-color-surface-container-high);
+  --m3e-nav-menu-item-selected-container-color: var(--md-sys-color-secondary-container);
+  --m3e-nav-menu-item-unselected-container-hover-color: var(--md-sys-color-surface-container-high);
+
 }
 
 .app-drawer {
@@ -52,7 +65,7 @@
   display: flex;
   flex-direction: column;
   width: min(17rem, 82vw);
-  min-height: calc(100dvh - 7rem);
+  min-width: 0;
   padding: 1rem 0.5rem;
   background: var(--md-sys-color-surface-container);
   color: var(--md-sys-color-on-surface);
@@ -67,11 +80,17 @@
 }
 
 .navigation-list {
+  background: var(--md-sys-color-surface-container);
+  --m3e-nav-menu-container-color: var(--md-sys-color-surface-container);
   --m3e-nav-menu-item-label-color: var(--md-sys-color-on-surface-variant);
   --m3e-nav-menu-item-selected-label-color: var(--md-sys-color-on-secondary-container);
   --m3e-nav-menu-item-selected-container-color: var(--md-sys-color-secondary-container);
   --m3e-nav-menu-item-selected-ripple-color: var(--md-sys-color-on-secondary-container);
   --m3e-nav-menu-item-unselected-container-hover-color: var(--md-sys-color-surface-container-high);
+}
+
+.app-content--settings .route-view {
+  background: var(--md-sys-color-background);
 }
 
 .route-view {
@@ -83,6 +102,7 @@
   min-height: 0;
   overflow-x: hidden;
   overflow-y: auto;
+  background: var(--md-sys-color-background);
 }
 
 .app-content--settings .route-view {
@@ -105,18 +125,23 @@
   inset: 0;
   width: 100%;
   min-height: 100%;
+  pointer-events: none;
+}
+
+.app-content--settings .settings-detail-enter-active .settings-layout__content,
+.app-content--settings .settings-detail-leave-active .settings-layout__content {
+  transition-property: opacity, transform;
+  will-change: opacity, transform;
 }
 
 .app-content--settings .settings-detail-enter-active .settings-layout__content {
-  transition:
-    opacity var(--md-sys-motion-duration-medium-2, 300ms) var(--md-sys-motion-easing-emphasized-decelerate, cubic-bezier(0.05, 0.7, 0.1, 1)),
-    transform var(--md-sys-motion-duration-medium-2, 300ms) var(--md-sys-motion-easing-emphasized-decelerate, cubic-bezier(0.05, 0.7, 0.1, 1));
+  transition-duration: var(--md-sys-motion-duration-medium-2, 300ms);
+  transition-timing-function: var(--md-sys-motion-easing-emphasized-decelerate, cubic-bezier(0.05, 0.7, 0.1, 1));
 }
 
 .app-content--settings .settings-detail-leave-active .settings-layout__content {
-  transition:
-    opacity var(--md-sys-motion-duration-short-4, 200ms) var(--md-sys-motion-easing-emphasized-accelerate, cubic-bezier(0.3, 0, 0.8, 0.15)),
-    transform var(--md-sys-motion-duration-short-4, 200ms) var(--md-sys-motion-easing-emphasized-accelerate, cubic-bezier(0.3, 0, 0.8, 0.15));
+  transition-duration: var(--md-sys-motion-duration-short-4, 200ms);
+  transition-timing-function: var(--md-sys-motion-easing-emphasized-accelerate, cubic-bezier(0.3, 0, 0.8, 0.15));
 }
 
 .app-content--settings .settings-detail-enter-from .settings-layout__content {
