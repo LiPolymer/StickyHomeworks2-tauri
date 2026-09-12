@@ -340,7 +340,7 @@ onUnmounted(() => stopAlwaysOnBottomWatch?.());
         ref="appDrawer"
         class="app-drawer"
         :start="isDrawerOpen"
-        start-mode="auto"
+        start-mode="over"
         start-divider
         @change="syncDrawerState"
       >
