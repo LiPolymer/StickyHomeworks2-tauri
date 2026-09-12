@@ -4,10 +4,7 @@ function preventTouchScroll(event: PointerEvent) {
 }
 
 function captureTouchPointer(event: PointerEvent) {
-  if (event.pointerType !== "mouse") {
-    event.currentTarget instanceof HTMLElement && event.currentTarget.setPointerCapture(event.pointerId);
-    event.preventDefault();
-  }
+  if (event.pointerType !== "mouse") event.preventDefault();
 }
 </script>
 

@@ -48,16 +48,6 @@ pub(crate) fn record_startup_event(app: &AppHandle, message: &str) {
     });
 }
 
-pub(crate) fn record_startup_error(app: &AppHandle, error: &str) {
-    let _ = append_event(app, LogEvent {
-        level: "error".into(),
-        operation: "app.startup".into(),
-        message: error.into(),
-        request_id: None,
-        details: None,
-    });
-}
-
 #[derive(Clone, Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub(crate) struct LogEvent {

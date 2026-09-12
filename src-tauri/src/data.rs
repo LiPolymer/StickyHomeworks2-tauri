@@ -73,6 +73,8 @@ pub(crate) struct AppSettings {
     pub(crate) max_panel_width: f64,
     #[serde(default, alias = "AlwaysOnBottom")]
     pub(crate) always_on_bottom: bool,
+    #[serde(default, alias = "AutoStart")]
+    pub(crate) auto_start: bool,
     #[serde(default = "default_background_opacity", alias = "BackgroundOpacity")]
     pub(crate) background_opacity: f64,
 }
@@ -100,6 +102,7 @@ impl Default for AppSettings {
             expired_mark_color: default_expired_mark_color(),
             max_panel_width: default_max_panel_width(),
             always_on_bottom: false,
+            auto_start: false,
             background_opacity: default_background_opacity(),
         }
     }
