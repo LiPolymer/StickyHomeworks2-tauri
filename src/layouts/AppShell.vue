@@ -227,8 +227,9 @@ provide(appContextKey, {
   importLegacyData,
 });
 
-async function startWindowDrag(event: PointerEvent) {
-  if (event.pointerType === "mouse" || !isWindowUnlocked.value) return;
+async function startWindowDrag(event: Event) {
+  if (event instanceof PointerEvent && event.pointerType !== "mouse") return;
+  if (!isWindowUnlocked.value) return;
   event.preventDefault();
   await startWindowDragging();
 }
@@ -422,8 +423,7 @@ onUnmounted(() => stopAlwaysOnBottomWatch?.());
         </m3e-action-list>
         <p v-if="windowControlError" class="window-control-error" role="alert">{{ windowControlError }}</p>
       </m3e-bottom-sheet>
-
-      <WindowUnlockOverlay v-if="isWindowUnlocked" @pointerdown="startWindowDrag" />
+      <WindowUnlockOverlay v-if="isWindowUnlocked" @pointerdown="startWindowDrag" @touchstart="startWindowDrag" />
 
       <HomeworkEditorDialog
         v-if="editingHomework"
