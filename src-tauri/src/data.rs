@@ -77,6 +77,8 @@ pub(crate) struct AppSettings {
     pub(crate) auto_start: bool,
     #[serde(default = "default_background_opacity", alias = "BackgroundOpacity")]
     pub(crate) background_opacity: f64,
+    #[serde(default = "default_homework_scale", alias = "HomeworkScale")]
+    pub(crate) homework_scale: f64,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -104,6 +106,7 @@ impl Default for AppSettings {
             always_on_bottom: false,
             auto_start: false,
             background_opacity: default_background_opacity(),
+            homework_scale: default_homework_scale(),
         }
     }
 }
@@ -135,6 +138,7 @@ pub(crate) fn normalize_settings(settings: &mut AppSettings) {
     settings.tags = unique_vocabulary(std::mem::take(&mut settings.tags));
     settings.max_panel_width = normalize_panel_width(settings.max_panel_width);
     settings.background_opacity = normalize_background_opacity(settings.background_opacity);
+    settings.homework_scale = normalize_homework_scale(settings.homework_scale);
 }
 
 fn schema_version() -> u8 {
@@ -168,6 +172,14 @@ fn normalize_background_opacity(value: f64) -> f64 {
         default_background_opacity()
     };
     value.clamp(0.0, 100.0).round()
+}
+fn default_homework_scale() -> f64 {
+    100.0
+}
+
+fn normalize_homework_scale(value: f64) -> f64 {
+    let value = if value.is_finite() { value } else { default_homework_scale() };
+    (value.clamp(75.0, 200.0) / 5.0).round() * 5.0
 }
 
 fn default_due_time() -> String {

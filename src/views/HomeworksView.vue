@@ -10,6 +10,7 @@ const { appData, homeworkGroups, isMobileRuntime, isHomeworkFrozen, openEditHome
     :mobile-layout="isMobileRuntime"
     :groups="homeworkGroups"
     :max-panel-width="appData.settings.maxPanelWidth"
+    :homework-scale="appData.settings.homeworkScale"
     :readonly="isHomeworkFrozen"
     @edit="openEditHomework"
     @delete="requestDeleteHomework"

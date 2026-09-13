@@ -23,6 +23,7 @@ export type AppSettings = {
   alwaysOnBottom: boolean;
   autoStart: boolean;
   backgroundOpacity: number;
+  homeworkScale: number;
 };
 
 export type AppData = {
@@ -54,6 +55,7 @@ export function createDefaultAppData(): AppData {
       alwaysOnBottom: false,
       autoStart: false,
       backgroundOpacity: 100,
+      homeworkScale: 100,
     },
   };
 }

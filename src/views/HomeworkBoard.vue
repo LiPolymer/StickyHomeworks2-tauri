@@ -10,7 +10,7 @@ import "../styles/homework-board.css";
 
 const selectedHomeworkId = ref<string | null>(null);
 const externalLinkDialog = ref<InstanceType<typeof ExternalLinkConfirmDialog> | null>(null);
-const props = defineProps<{ mobileLayout: boolean; groups: SubjectGroup[]; maxPanelWidth: number; readonly: boolean }>();
+const props = defineProps<{ mobileLayout: boolean; groups: SubjectGroup[]; maxPanelWidth: number; homeworkScale: number; readonly: boolean }>();
 
 const emit = defineEmits<{
   edit: [id: string];
@@ -91,34 +91,26 @@ function deleteHomework(id: string) {
 <template>
   <section :ref="setBoardElement" class="homework-board" :class="{ 'homework-board--readonly': readonly }" aria-label="作业列表">
     <div :ref="setScrollElement" class="homework-scroll-region">
-      <div v-if="groups.length === 0" class="homework-empty-state">
-        <m3e-icon name="assignment"></m3e-icon>
-        <m3e-heading variant="title" size="large" level="2">还没有作业</m3e-heading>
-      </div>
-      <div class="masonry-columns" :style="{ '--homework-column-count': masonryColumns.length, '--homework-panel-width': `${maxPanelWidth}px` }">
-        <div v-for="(column, columnIndex) in masonryColumns" :key="columnIndex" class="masonry-column">
-          <section v-for="group in column" :key="group.id" :ref="(element) => setGroupElement(group.id, element)" class="subject-group" :aria-labelledby="`subject-${group.id}`">
-            <m3e-heading :id="`subject-${group.id}`" variant="headline" size="small" level="2">{{ group.name }}</m3e-heading>
-            <m3e-list class="subject-homework-list" variant="segmented">
-              <m3e-list-action
-                v-for="homework in group.homeworks"
-                :key="homework.id"
-                class="homework-item"
-                :class="{ 'homework-item--selected': selectedHomeworkId === homework.id, 'homework-item--expired': homework.expired }"
-                :style="homework.expired ? { '--homework-expired-color': homework.expiredMarkColor } : undefined"
-                @click="handleHomeworkClick($event, homework.id)"
-              >
-                <span class="homework-content"><span class="homework-marker" aria-hidden="true"></span><span class="homework-text" v-html="homework.content"></span></span>
-                <div slot="supporting-text" class="homework-supporting-content">
-                  <div class="homework-tags"><m3e-chip v-for="tag in homework.tags" :key="tag" variant="outlined">{{ tag }}</m3e-chip></div>
-                  <div v-if="!readonly && selectedHomeworkId === homework.id" class="homework-actions">
-                    <m3e-icon-button aria-label="编辑作业" title="编辑作业" @click.stop="editHomework(homework.id)"><m3e-icon name="edit"></m3e-icon></m3e-icon-button>
-                    <m3e-icon-button aria-label="删除作业" title="删除作业" @click.stop="deleteHomework(homework.id)"><m3e-icon name="delete"></m3e-icon></m3e-icon-button>
+      <div class="homework-scale-content" :style="{ '--homework-scale': homeworkScale / 100 }">
+        <div v-if="groups.length === 0" class="homework-empty-state">
+          <m3e-icon name="assignment"></m3e-icon>
+          <m3e-heading variant="title" size="large" level="2">还没有作业</m3e-heading>
+        </div>
+        <div class="masonry-columns" :style="{ '--homework-column-count': masonryColumns.length, '--homework-panel-width': `${maxPanelWidth}px` }">
+          <div v-for="(column, columnIndex) in masonryColumns" :key="columnIndex" class="masonry-column">
+            <section v-for="group in column" :key="group.id" :ref="(element) => setGroupElement(group.id, element)" class="subject-group" :aria-labelledby="`subject-${group.id}`">
+              <m3e-heading :id="`subject-${group.id}`" variant="headline" size="small" level="2">{{ group.name }}</m3e-heading>
+              <m3e-list class="subject-homework-list" variant="segmented">
+                <m3e-list-action v-for="homework in group.homeworks" :key="homework.id" class="homework-item" :class="{ 'homework-item--selected': selectedHomeworkId === homework.id, 'homework-item--expired': homework.expired }" :style="homework.expired ? { '--homework-expired-color': homework.expiredMarkColor } : undefined" @click="handleHomeworkClick($event, homework.id)">
+                  <span class="homework-content"><span class="homework-marker" aria-hidden="true"></span><span class="homework-text" v-html="homework.content"></span></span>
+                  <div slot="supporting-text" class="homework-supporting-content">
+                    <div class="homework-tags"><m3e-chip v-for="tag in homework.tags" :key="tag" variant="outlined">{{ tag }}</m3e-chip></div>
+                    <div v-if="!readonly && selectedHomeworkId === homework.id" class="homework-actions"><m3e-icon-button aria-label="编辑作业" title="编辑作业" @click.stop="editHomework(homework.id)"><m3e-icon name="edit"></m3e-icon></m3e-icon-button><m3e-icon-button aria-label="删除作业" title="删除作业" @click.stop="deleteHomework(homework.id)"><m3e-icon name="delete"></m3e-icon></m3e-icon-button></div>
                   </div>
-                </div>
-              </m3e-list-action>
-            </m3e-list>
-          </section>
+                </m3e-list-action>
+              </m3e-list>
+            </section>
+          </div>
         </div>
       </div>
     </div>

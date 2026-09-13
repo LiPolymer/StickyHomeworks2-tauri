@@ -27,6 +27,13 @@
   overflow-y: hidden;
 }
 
+.homework-scale-content {
+  width: max-content;
+  min-width: calc(100% / var(--homework-scale));
+  min-height: 100%;
+  transform: scale(var(--homework-scale));
+  transform-origin: top left;
+}
 .homework-empty-state {
   display: grid;
   min-height: 14rem;

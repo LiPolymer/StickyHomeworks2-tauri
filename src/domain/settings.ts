@@ -13,12 +13,17 @@ export function normalizeSettings(settings: AppSettings): AppSettings {
     tags: uniqueVocabulary(settings.tags),
     maxPanelWidth: Math.round(Math.max(160, Math.min(2000, maxPanelWidth)) / 10) * 10,
     backgroundOpacity: normalizeBackgroundOpacity(settings.backgroundOpacity),
+    homeworkScale: normalizeHomeworkScale(settings.homeworkScale),
   };
 }
 
 export function normalizeBackgroundOpacity(value: number): number {
   const opacity = Number.isFinite(value) ? value : 100;
   return Math.round(Math.max(0, Math.min(100, opacity)));
+}
+export function normalizeHomeworkScale(value: number): number {
+  const scale = Number.isFinite(value) ? value : 100;
+  return Math.round(Math.max(75, Math.min(200, scale)) / 5) * 5;
 }
 
 export function updateAppSettings(data: AppData, mutate: SettingsMutator): AppData {
