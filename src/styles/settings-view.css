@@ -612,6 +612,76 @@
   height: 100%;
   object-fit: cover;
 }
+
+.settings-glycoprotein,
+.settings-glycoprotein__notice {
+  color: var(--md-sys-color-on-surface);
+}
+
+.settings-glycoprotein__notice p {
+  margin: 0;
+  color: var(--md-sys-color-on-surface-variant);
+  line-height: 1.5;
+}
+
+.settings-glycoprotein__node-id-controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.settings-glycoprotein__status-content {
+  display: grid;
+}
+
+.settings-glycoprotein__status-grid {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 0.75rem 1rem;
+  align-items: baseline;
+}
+
+.settings-glycoprotein__status-grid > span {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.settings-glycoprotein__status-grid code {
+  overflow-wrap: anywhere;
+  color: var(--md-sys-color-on-surface);
+}
+
+.settings-glycoprotein__running {
+  color: var(--md-sys-color-primary);
+}
+
+.settings-glycoprotein__error {
+  margin: 1rem 0 0;
+  color: var(--md-sys-color-error);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 599px) {
+  .settings-glycoprotein__node-id-item {
+    align-items: start;
+  }
+
+  .settings-glycoprotein__node-id-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .settings-glycoprotein__status-grid {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+
+  .settings-glycoprotein__status-grid > :not(span) {
+    margin-bottom: 0.75rem;
+  }
+}
 .settings-expiry-controls {
   display: grid;
   gap: 0;
