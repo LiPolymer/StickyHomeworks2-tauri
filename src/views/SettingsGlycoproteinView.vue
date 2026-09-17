@@ -32,6 +32,11 @@ let unlistenStatus: (() => void) | undefined;
 
 const unavailable = computed(() => isMobileRuntime.value || !status.value.supported);
 const pageError = computed(() => localError.value || settingsError.value);
+const socketDirectoryParts = computed(() => {
+  const socketDirectory = status.value.socketDirectory;
+  if (!socketDirectory) return [];
+  return socketDirectory.match(/[^\\/]*[\\/]|[^\\/]+$/g) ?? [socketDirectory];
+});
 const statusLabel = computed(() => {
   if (unavailable.value) return "当前平台不可用";
   if (status.value.running) return "运行中";
@@ -114,7 +119,7 @@ onBeforeUnmount(() => unlistenStatus?.());
       <p slot="content">Glycoprotein 节点仅在 Windows、Linux 和 macOS 桌面应用中运行。</p>
     </m3e-card>
 
-    <m3e-list class="settings-control-list">
+    <m3e-list class="settings-control-list settings-glycoprotein__settings-list">
       <m3e-list-item class="settings-control-list__item">
         Glycoprotein 节点
         <span slot="supporting-text">通过本机 Unix Domain Socket 向其他 Glycoprotein 节点公开窗口控制与作业变更事件。</span>
@@ -127,35 +132,54 @@ onBeforeUnmount(() => unlistenStatus?.());
         ></m3e-switch>
       </m3e-list-item>
       <m3e-divider inset></m3e-divider>
-      <m3e-list-item class="settings-control-list__item settings-glycoprotein__node-id-item">
-        节点 ID
-        <span slot="supporting-text">修改后会重建运行中的节点；同一设备上的 ID 必须唯一。</span>
-        <div slot="trailing" class="settings-glycoprotein__node-id-controls">
+      <div class="settings-glycoprotein__node-id-item" role="group" aria-labelledby="settings-glycoprotein-node-id-label">
+        <div class="settings-glycoprotein__node-id-copy">
+          <label
+            id="settings-glycoprotein-node-id-label"
+            class="settings-glycoprotein__node-id-label"
+            for="settings-glycoprotein-node-id"
+          >节点 ID</label>
+          <p id="settings-glycoprotein-node-id-help" class="settings-glycoprotein__node-id-supporting-text">
+            修改后会重建运行中的节点；同一设备上的 ID 必须唯一。
+          </p>
+        </div>
+        <div class="settings-glycoprotein__node-id-controls">
           <m3e-form-field variant="outlined" hide-subscript="always">
             <input
               id="settings-glycoprotein-node-id"
               v-model="nodeId"
-              aria-label="Glycoprotein 节点 ID"
+              aria-describedby="settings-glycoprotein-node-id-help"
               :disabled="unavailable || isSaving"
               @change="saveNodeId"
             />
           </m3e-form-field>
           <m3e-button variant="text" :disabled="unavailable || isSaving" @click="generateNodeId">重新生成</m3e-button>
         </div>
-      </m3e-list-item>
+      </div>
     </m3e-list>
 
     <section class="settings-group settings-glycoprotein" aria-labelledby="settings-glycoprotein-status-title">
       <m3e-heading id="settings-glycoprotein-status-title" variant="title" size="large" level="2">运行状态</m3e-heading>
       <m3e-card variant="outlined">
         <div slot="content" class="settings-glycoprotein__status-content">
-          <div class="settings-glycoprotein__status-grid">
-            <span>状态</span><strong :class="{ 'settings-glycoprotein__running': status.running }">{{ statusLabel }}</strong>
-            <span>当前节点 ID</span><code>{{ status.nodeId || appData.settings.glycoproteinNodeId }}</code>
-            <template v-if="status.socketDirectory">
-              <span>Socket 目录</span><code>{{ status.socketDirectory }}</code>
-            </template>
-          </div>
+          <dl class="settings-glycoprotein__status-list">
+            <div class="settings-glycoprotein__status-row">
+              <dt>状态</dt>
+              <dd><strong :class="{ 'settings-glycoprotein__running': status.running }">{{ statusLabel }}</strong></dd>
+            </div>
+            <div class="settings-glycoprotein__status-row">
+              <dt>当前节点 ID</dt>
+              <dd><code>{{ status.nodeId || appData.settings.glycoproteinNodeId }}</code></dd>
+            </div>
+            <div v-if="status.socketDirectory" class="settings-glycoprotein__status-row settings-glycoprotein__status-row--path">
+              <dt>Socket 目录</dt>
+              <dd>
+                <code :title="status.socketDirectory">
+                  <span v-for="(part, index) in socketDirectoryParts" :key="`${index}-${part}`">{{ part }}<wbr /></span>
+                </code>
+              </dd>
+            </div>
+          </dl>
           <p v-if="status.lastError" class="settings-glycoprotein__error" role="alert">{{ status.lastError }}</p>
         </div>
       </m3e-card>

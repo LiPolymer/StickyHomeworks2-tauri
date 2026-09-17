@@ -371,7 +371,7 @@ mod desktop {
         String,
     > {
         let node = GlycoComplex::builder(node_id)
-            .vendor(format!("StickyHomeworks2 v{}", app.package_info().version))
+            .vendor(format!("StickyHomeworks2N v{}", app.package_info().version))
             .build()
             .map_err(|error| error.to_string())?;
 
